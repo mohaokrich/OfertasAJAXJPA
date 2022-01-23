@@ -18,7 +18,7 @@ public class OfertaDaoImpl implements OfertaDao{
 	@Override
 	public List<Oferta> getAllOfertas() { 
 		return jdbcTemplate.query("SELECT * from Ofertas", 
-				(rs, rowNum) -> new Oferta(rs.getLong("id"),rs.getString("prioridad"),rs.getString("nombre"),rs.getDouble("precio")));
+				(rs, rowNum) ->new Oferta(rs.getLong("id"),rs.getString("nombre"),rs.getString("fecha_publicacion"),rs.getString("prioridad"),rs.getString("hiperenlace"),rs.getString("descripcion"), rs.getDouble("precio")));
 	}
 
 	@Override

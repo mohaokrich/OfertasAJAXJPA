@@ -1,7 +1,8 @@
+//CARGAR DOM
 document.addEventListener("DOMContentLoaded", function () {
-	obtenerUsuarios();
+	obtenerOfertas();
 });
-
+//ELIMINAR FILA
 $(document).on('click', '#borrar', function() {
  	  	var tr = $(this).closest("tr");
  	  	var id = tr[0].childNodes[0].innerText;
@@ -10,22 +11,51 @@ $(document).on('click', '#borrar', function() {
 	    $(this).closest('tr').remove(); 
 });
 
-$(document).on('click', '.info', function() {
- 	fetch('/ofertas', {headers: {"Content-Type": "application/json; charset=utf-8"}})
+//MOSTRAR VENTANA MODAL CON INFORMACION SOBRE LA OFERTA
+$(document).on('click', '#info', function() {
+	$("#modal").modal('show');
+	
+	$(".btn-close").on('click', function(){
+		$("#modal").modal("hide");
+	});
+	
+ 	 var tr = $(this).closest("tr");
+ 	 var id = tr[0].childNodes[0].innerText;
+ 	fetch('/oferta/oferta'+id, {headers: {"Content-Type": "application/json; charset=utf-8"}})
         .then(res => res.json()) // parse response as JSON (can be res.text() for plain response)
         .then(response => {
-			let divModal = document.createElement("div");
-			divModal.set
-			
-			$('#myModalExito').modal('show'); 
-            for (let ofertas of response) {
-				
-				
 
-            }
+	
+					let ModalBody = document.getElementsByClassName("modal-body")[0];
+					ModalBody.replaceChildren();
+					let ModalTitle = document.getElementsByClassName("modal-title");
+					
+					let infoId = document.createElement('p');
+					infoId.textContent = 'ID: ' + response.id;
+					let infoNombre = document.createElement('p');
+					infoNombre.textContent = 'NOMBRE: ' + response.nombre;
+					let infoFecha = document.createElement('p');
+					infoFecha.textContent = 'FECHA PUBLICACIÓN: ' +response.fecha_publicacion;
+					let infoPrecio = document.createElement('p');
+					infoPrecio.textContent = 'PRECIO: ' +response.precio;
+					let infoPrioridad = document.createElement('p');
+					infoPrioridad.textContent = 'PRIORIDAD: ' +response.prioridad;
+					let infoEnlace = document.createElement('p');
+					infoEnlace.textContent = 'HIPERVINCULO: ' +response.hiperenlace;
+					
+					ModalBody.appendChild(infoId);
+					ModalBody.appendChild(infoNombre);
+					ModalBody.appendChild(infoFecha);
+					ModalBody.appendChild(infoPrioridad);
+					ModalBody.appendChild(infoEnlace);
+					ModalBody.appendChild(infoPrecio);
+			
+
+         
     });
 });
-function obtenerUsuarios() {
+//MONTAR Y OBTENER LA TABLA DE OFERTAS
+function obtenerOfertas() {
     fetch('/ofertas', {headers: {"Content-Type": "application/json; charset=utf-8"}})
         .then(res => res.json()) // parse response as JSON (can be res.text() for plain response)
         .then(response => {

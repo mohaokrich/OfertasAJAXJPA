@@ -21,7 +21,7 @@ import des.alumno.ofertasapp.modelo.OfertaDao;
 public class OfertaController {
 	
 	@Autowired
-	OfertaDao modeloOfeta;
+	OfertaDao modeloOferta;
 
 	
 		@PostMapping("/index")
@@ -39,33 +39,31 @@ public class OfertaController {
 			oferta.setHiperenlace(hiperenlace);
 			oferta.setPrecio(precio);
 			
-			modeloOfeta.crerOferta(oferta);
+			modeloOferta.crerOferta(oferta);
 			return "redirect:/index";
 	    }
 		
 		@ResponseBody
 		@RequestMapping(method = RequestMethod.GET, value = "/ofertas")
 		public List<Oferta> obtenerTodos() {
-			return modeloOfeta.getAllOfertas();
+			return modeloOferta.getAllOfertas();
 		}
 
 		@GetMapping("/oferta/borrar/{id}")
 		public String getBorrarIdProducto(@PathVariable("id") long id) {
-			modeloOfeta.borrarFila(id);
+			modeloOferta.borrarFila(id);
 			return "redirect:/";
 		}
 		
 		@GetMapping("/oferta/buscar")
 		public String getBuscarOferta(Model modelo, @RequestParam String busqueda) {
-			List<Oferta> ListaOfertasInfo = modeloOfeta.buscarOferta(busqueda);
+			List<Oferta> ListaOfertasInfo = modeloOferta.buscarOferta(busqueda);
 			modelo.addAttribute("ListaOfertasInfo", ListaOfertasInfo);
 			return "/perfil";
 		}
-		@GetMapping("/oferta/oferta{id}")
-		public String getIdProducto(Model modelo, @PathVariable("id") long id) {
-			Optional<Oferta> ListaOfertasInfo =  modeloOfeta.buscarPorId(id);
-			Oferta p1 = ListaOfertasInfo.get();
-			modelo.addAttribute("ListaOfertasInfo", p1);
-			return "/perfil";
+		@ResponseBody
+		@RequestMapping(method = RequestMethod.GET, value = "/oferta/oferta{id}")
+		public Optional<Oferta> getIdProducto(Model modelo, @PathVariable("id") long id) {
+			return modeloOferta.buscarPorId(id);
 		}
 }

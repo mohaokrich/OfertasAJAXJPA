@@ -13,4 +13,5 @@ public interface OfertaDao {
 	List<Oferta> buscarOferta(String nombre);
 	Optional<Oferta> buscarPorId(long id);
 
+
 }
