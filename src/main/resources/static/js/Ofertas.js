@@ -1,6 +1,7 @@
 //CARGAR DOM
 document.addEventListener("DOMContentLoaded", function () {
 	obtenerOfertas();
+	$("#enviar").click(crearOferta);
 });
 //ELIMINAR FILA
 $(document).on('click', '#borrar', function() {
@@ -28,7 +29,9 @@ $(document).on('click', '#info', function() {
 	
 					let ModalBody = document.getElementsByClassName("modal-body")[0];
 					ModalBody.replaceChildren();
-					let ModalTitle = document.getElementsByClassName("modal-title");
+					let ModalTitle = document.getElementsByClassName("modal-title")[0];
+					
+					ModalTitle.textContent = response.nombre;
 					
 					let infoId = document.createElement('p');
 					infoId.textContent = 'ID: ' + response.id;
@@ -118,9 +121,20 @@ function obtenerOfertas() {
 }
 
 
-function stopDefAction(evt) {
-  evt.preventDefault();
+
+function crearOferta(){
+	if($('#inputNombre').val() != "" && $('#selectProducto').val() != "" 
+	&& $('#inputPrecio').val() != "" && $('#inputEnlace').val() != "" 
+	&& $('#inputDescripcion').val() != ""){
+		
+		
+	}
 }
+
+
+//function stopDefAction(evt) {
+  //evt.preventDefault();
+//}
 
 
 

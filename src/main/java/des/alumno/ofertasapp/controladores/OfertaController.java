@@ -24,23 +24,15 @@ public class OfertaController {
 	OfertaDao modeloOferta;
 
 	
-		@PostMapping("/index")
-		public String obtenerDatosFormulario(Model modelo, @RequestParam String nombre,
-														   @RequestParam String prioridad,
-														   @RequestParam String descripcion,
-														   @RequestParam String hiperenlace,
-														   @RequestParam double precio) {
-			Oferta oferta = new Oferta();
-			oferta = new Oferta(null,null,null,null,0);
-			
-			oferta.setNombre(nombre);
-			oferta.setPrioridad(prioridad);
-			oferta.setDescripcion(descripcion);
-			oferta.setHiperenlace(hiperenlace);
-			oferta.setPrecio(precio);
-			
-			modeloOferta.crerOferta(oferta);
-			return "redirect:/index";
+		@ResponseBody
+		@RequestMapping(method = RequestMethod.POST, value = "/oferta/crear")
+		public int obtenerDatosFormulario(@RequestParam String nombre,
+											 @RequestParam String prioridad,
+											 @RequestParam String descripcion,
+											 @RequestParam String hiperenlace,
+											 @RequestParam double precio) {
+
+			return modeloOferta.crerOferta(new Oferta(nombre,prioridad, descripcion,hiperenlace, precio));
 	    }
 		
 		@ResponseBody
