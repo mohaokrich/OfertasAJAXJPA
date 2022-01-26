@@ -124,11 +124,25 @@ function obtenerOfertas() {
 
 function crearOferta(){
 	if($('#inputNombre').val() != "" && $('#selectProducto').val() != "" 
-	&& $('#inputPrecio').val() != "" && $('#inputEnlace').val() != "" 
-	&& $('#inputDescripcion').val() != ""){
+		&& $('#inputPrecio').val() != "" && $('#inputEnlace').val() != "" 
+		&& $('#inputDescripcion').val() != ""){
+		fetch('/oferta/crear', {
+            headers: {
+                'Content-type': 'application/json'
+            },
+            method: 'POST',
+            body: JSON.stringify({nombre: $('#inputNombre').val(), prioridad: $('#selectProducto').val()
+            ,precio: $('#inputPrecio').val(), hiperenlace: $('#inputEnlace').val(), descripcion: $('#inputDescripcion').val()})
+        })
+        //.then(function(response) {
+          //      if(response.ok) {
+            //        return response.json();
+              //  } else {
+                //    throw "la oferta ya existe";
+                //}
+        //});
 		
-		
-	}
+	};
 }
 
 

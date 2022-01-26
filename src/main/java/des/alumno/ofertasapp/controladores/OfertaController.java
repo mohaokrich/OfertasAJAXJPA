@@ -26,13 +26,13 @@ public class OfertaController {
 	
 		@ResponseBody
 		@RequestMapping(method = RequestMethod.POST, value = "/oferta/crear")
-		public int obtenerDatosFormulario(@RequestParam String nombre,
+		public String obtenerDatosFormulario(@RequestParam String nombre,
 											 @RequestParam String prioridad,
 											 @RequestParam String descripcion,
 											 @RequestParam String hiperenlace,
 											 @RequestParam double precio) {
-
-			return modeloOferta.crerOferta(new Oferta(nombre,prioridad, descripcion,hiperenlace, precio));
+			modeloOferta.crerOferta(new Oferta(nombre,prioridad, descripcion,hiperenlace, precio));
+			return "redirect:/";
 	    }
 		
 		@ResponseBody

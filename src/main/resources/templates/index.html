@@ -67,14 +67,14 @@
   	</aside>
 	<aside id="menu_izq" class="toggle toggle-content"  th:if="${session.usuario == null}">
 			<h2>Añadir Oferta</h2>
-			<form th:method="POST" >
+			<form action="/oferta/crear" method="POST">
 				<div class="form-group">
 					<label class="col-form-label" for="inputNombre">Producto</label> 
-					<input type="text" class="form-control" th:name="nombre" placeholder="Nombre del producto" id="inputNombre">
+					<input type="text" class="form-control" name="nombre" placeholder="Nombre del producto" id="inputNombre">
 				</div>
 				<div class="form-group">
 					<label for="selectProducto">Selecciona Priodad</label> 
-					<select  th:name="prioridad" class="form-select" id="selectProducto" size="3">
+					<select  name="prioridad" class="form-select" id="selectProducto" size="3">
 						<option>baja</option>
 						<option>media</option>
 						<option>alta</option>
@@ -82,21 +82,21 @@
 				</div>
 				<div class="form-group">
 					<label class="col-form-label" for="inputGramos">Precio</label> 
-					<input type="text"  th:name="precio" class="form-control" placeholder="Cuanto cuesta" id="inputPrecio">
+					<input type="text"  name="precio" class="form-control" placeholder="Cuanto cuesta" id="inputPrecio">
 				</div>
 				<div class="form-group">
 					<label class="form-label" for="inputEnlace">Hipevinculo</label> 
-					<input type="text"  th:name="hiperenlace" value="https://" class="form-control" id="inputEnlace">
+					<input type="text"  name="hiperenlace" value="https://" class="form-control" id="inputEnlace">
 				</div>
 				<div class="d-grid gap-2">
 	
 					<div class="form-group">
 						<label for="inputDescripcion">Descripcion</label>
-						<textarea  th:name="descripcion" class="form-control" id="inputDescripcion" rows="3"></textarea>
+						<textarea  name="descripcion" class="form-control" id="inputDescripcion" rows="3"></textarea>
 					</div>
 	
 					<div class="d-grid gap-2">
-						<button class="btn btn-lg btn-primary" id="enviar" type="submit">ENVIAR</button>
+						<button class="btn btn-lg btn-primary" id="enviar" value="enviar" type="submit">ENVIAR</button>
 					</div>
 				</div>
 			</form>
