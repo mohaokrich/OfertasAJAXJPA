@@ -25,22 +25,38 @@ public class OfertaController {
 
 	
 		@ResponseBody
+		@RequestMapping(method = RequestMethod.GET, value = "/ofertas")
+		public List<Oferta> obtenerTodos() {
+			return modeloOferta.getAllOfertas();
+		}
+	
 		@RequestMapping(method = RequestMethod.POST, value = "/oferta/crear")
 		public String obtenerDatosFormulario(@RequestParam String nombre,
 											 @RequestParam String prioridad,
 											 @RequestParam String descripcion,
 											 @RequestParam String hiperenlace,
 											 @RequestParam double precio) {
-			modeloOferta.crerOferta(new Oferta(nombre,prioridad, descripcion,hiperenlace, precio));
+			modeloOferta.crerOferta(new Oferta(nombre,prioridad, hiperenlace,descripcion, precio));
 			return "redirect:/";
 	    }
 		
-		@ResponseBody
-		@RequestMapping(method = RequestMethod.GET, value = "/ofertas")
-		public List<Oferta> obtenerTodos() {
-			return modeloOferta.getAllOfertas();
-		}
-
+		@RequestMapping(method = RequestMethod.POST, value = "/editar/oferta/{id}")
+		public String editarOferta(@RequestParam String nombre,
+											 @RequestParam String prioridad,
+											 @RequestParam String descripcion,
+											 @RequestParam String hiperenlace,
+											 @RequestParam double precio, @PathVariable("id") long id) {
+			Oferta oferta = new Oferta();
+			oferta.setNombre(nombre);
+			oferta.setPrioridad(prioridad);
+			oferta.setDescripcion(descripcion);
+			oferta.setHiperenlace(hiperenlace);
+			oferta.setPrecio(precio);
+			oferta.setId(id);
+			modeloOferta.editarOferta(oferta);
+			return "redirect:/";
+	    }
+		
 		@GetMapping("/oferta/borrar/{id}")
 		public String getBorrarIdProducto(@PathVariable("id") long id) {
 			modeloOferta.borrarFila(id);
@@ -58,4 +74,9 @@ public class OfertaController {
 		public Optional<Oferta> getIdProducto(Model modelo, @PathVariable("id") long id) {
 			return modeloOferta.buscarPorId(id);
 		}
+		@ResponseBody
+		@RequestMapping(method = RequestMethod.GET, value = "/oferta/filtrar", params="prioridad")
+	    public List<Oferta> filtrarPrioridad(@RequestParam String prioridad) {
+	        return modeloOferta.filtrarOferta(prioridad);
+	    }
 }
