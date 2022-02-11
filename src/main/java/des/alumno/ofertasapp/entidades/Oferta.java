@@ -1,106 +1,140 @@
 package des.alumno.ofertasapp.entidades;
 
 import java.io.Serializable;
+import java.util.Date;
+import javax.persistence.Basic;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 
-
+@Entity
+@Table(name = "ofertas")
 public class Oferta implements Serializable{
 	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	//ATRIBUTOS
-	private long id;
-	private String nombre;
-	private String fecha_publicacion;
-	private String prioridad;
-	private String hiperenlace;
-	private String descripcion;
-	private Double precio;
+	
+	@Id
+	@GeneratedValue(strategy= GenerationType.IDENTITY)
+	@Column(name = "id")
+	private Long idOferta;
+	
+	@Column(name = "nombre")
+	private String nombreOferta;
+	
+	@Basic
+	@Temporal(TemporalType.TIMESTAMP)
+	@Column(name = "fecha_publicacion")
+	private Date fechaPublicacion;
+	
+	@Column(name = "prioridad")
+	private String prioridadOferta;
+	
+	@Column(name = "hiperenlace")
+	private String hiperenlaceOferta;
+	
+	@Column(name = "descripcion")
+	private String descripcionOferta;
+	
+	@Column(name = "precio")
+	private Double precioOferta;
 	
 	//CONSTRUCTORES
 	
 	public Oferta() {
 		
 	}
+	//CONSTRUCTORES
 	
-	public Oferta(long id, String nombre, String fecha_publicacion, String prioridad, String hiperenlace, String descripcion, double precio) {
+	public Oferta(Long idOferta, String nombreOferta, Date fechaPublicacion, String prioridadOferta,
+			String hiperenlaceOferta, String descripcionOferta, Double precioOferta) {
 		super();
-		this.id = id;
-		this.nombre = nombre;
-		this.fecha_publicacion = fecha_publicacion;
-		this.prioridad = prioridad;
-		this.hiperenlace = hiperenlace;
-		this.descripcion = descripcion;
-		this.precio = precio;
+		this.idOferta = idOferta;
+		this.nombreOferta = nombreOferta;
+		this.fechaPublicacion = fechaPublicacion;
+		this.prioridadOferta = prioridadOferta;
+		this.hiperenlaceOferta = hiperenlaceOferta;
+		this.descripcionOferta = descripcionOferta;
+		this.precioOferta = precioOferta;
 	}
-
-	public Oferta(String nombre, String prioridad, String hiperenlace, String descripcion, double precio) {
+	
+	public Oferta(String nombreOferta, String prioridadOferta, String hiperenlaceOferta, String descripcionOferta, Double precioOferta) {
 		super();
-		this.nombre = nombre;
-		this.prioridad = prioridad;
-		this.hiperenlace = hiperenlace;
-		this.descripcion = descripcion;
-		this.precio = precio;
+		this.nombreOferta = nombreOferta;
+		this.prioridadOferta = prioridadOferta;
+		this.hiperenlaceOferta = hiperenlaceOferta;
+		this.descripcionOferta = descripcionOferta;
+		this.precioOferta = precioOferta;
 	}
-
-	public Oferta(long id,String prioridad, String nombre, double precio) {
-		super();
-		this.id = id;
-		this.prioridad = prioridad;
-		this.nombre = nombre;
-		this.precio = precio;
-	}
-
+	
 	//GETTERS Y SETTERS
-	public long getId() {
-		return id;
+	public Long getIdOferta() {
+		return idOferta;
 	}
-	public void setId(long id) {
-		this.id = id;
+	public void setIdOferta(Long idOferta) {
+		this.idOferta = idOferta;
 	}
-	public String getNombre() {
-		return nombre;
+
+	public String getNombreOferta() {
+		return nombreOferta;
 	}
-	public void setNombre(String nombre) {
-		this.nombre = nombre;
+
+	public void setNombreOferta(String nombreOferta) {
+		this.nombreOferta = nombreOferta;
+	}
+
+	public Date getFechaPublicacion() {
+		return fechaPublicacion;
+	}
+
+	public void setFechaPublicacion(Date fechaPublicacion) {
+		this.fechaPublicacion = fechaPublicacion;
+	}
+
+	public String getPrioridadOferta() {
+		return prioridadOferta;
+	}
+
+	public void setPrioridadOferta(String prioridadOferta) {
+		this.prioridadOferta = prioridadOferta;
+	}
+
+	public String getHiperenlaceOferta() {
+		return hiperenlaceOferta;
+	}
+
+	public void setHiperenlaceOferta(String hiperenlaceOferta) {
+		this.hiperenlaceOferta = hiperenlaceOferta;
+	}
+
+	public String getDescripcionOferta() {
+		return descripcionOferta;
+	}
+
+	public void setDescripcionOferta(String descripcionOferta) {
+		this.descripcionOferta = descripcionOferta;
+	}
+
+	public Double getPrecioOferta() {
+		return precioOferta;
+	}
+
+	public void setPrecioOferta(Double precioOferta) {
+		this.precioOferta = precioOferta;
 	}
 	
-	public String getFecha_publicacion() {
-		return fecha_publicacion;
-	}
+	
 
-	public void setFecha_publicacion(String fecha_publicacion) {
-		this.fecha_publicacion = fecha_publicacion;
-	}
 
-	public String getPrioridad() {
-		return prioridad;
-	}
-	public void setPrioridad(String prioridad) {
-		this.prioridad = prioridad;
-	}
-	public String getHiperenlace() {
-		return hiperenlace;
-	}
-	public void setHiperenlace(String hiperenlace) {
-		this.hiperenlace = hiperenlace;
-	}
-	public String getDescripcion() {
-		return descripcion;
-	}
-	public void setDescripcion(String descripcion) {
-		this.descripcion = descripcion;
-	}
-	public Double getPrecio() {
-		return precio;
-	}
-	public void setPrecio(Double precio) {
-		this.precio = precio;
-	}
 
-	//TO STRING
-	@Override
-	public String toString() {
-		return "Oferta [id=" + id + ", nombre=" + nombre + ", fecha=" + fecha_publicacion + ", prioridad=" + prioridad
-				+ ", hiperenlace=" + hiperenlace + ", descripcion=" + descripcion + ", precio=" + precio + "]";
-	}
 	
 	
 }

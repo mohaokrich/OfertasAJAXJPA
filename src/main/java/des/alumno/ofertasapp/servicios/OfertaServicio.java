@@ -2,11 +2,21 @@ package des.alumno.ofertasapp.servicios;
 
 import java.util.List;
 
+
 import des.alumno.ofertasapp.entidades.Oferta;
 
 public interface OfertaServicio {
 	
-	public Oferta crearOfertaServ(Oferta o);
-	public List<Oferta> obtenerofertaServ();
-	
+	 List<Oferta> obtenerofertaServ();
+	 
+	 Oferta eliminarOferta(long idOferta);
+	 
+	 Oferta obtenerInfoOferta (long idOferta);
+	 
+	 Oferta crearOferta (Oferta o);
+	 
+	 Oferta editarOferta(Oferta o, long id);
+	 
+	 List<Oferta> filtrarOferta(String prioridad);
+
 }

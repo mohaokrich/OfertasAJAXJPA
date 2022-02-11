@@ -62,13 +62,13 @@ function obtenerOfertas() {
 		.then(res => res.json()) // parse response as JSON (can be res.text() for plain response)
 		.then(ofertas => {
 			for (let oferta of ofertas) {
-				obtenerFilaDom(oferta.id, oferta.nombre, oferta.precio);
+				obtenerFilaDom(oferta.idOferta, oferta.nombreOferta, oferta.precioOferta);
 
-				if (oferta.prioridad == "baja") {
+				if (oferta.prioridadOferta == "baja") {
 					$("tr").last().addClass("table-active");
-				} else if (oferta.prioridad == "media") {
+				} else if (oferta.prioridadOferta == "media") {
 					$("tr").last().addClass("table-warning");
-				} else if (oferta.prioridad == "alta") {
+				} else if (oferta.prioridadOferta == "alta") {
 					$("tr").last().addClass("table-danger");
 				}
 			}
@@ -86,8 +86,8 @@ function crearOferta() {
 			},
 			method: 'POST',
 			body: JSON.stringify({
-				nombre: $('#inputNombre').val(), prioridad: $('#selectProducto').val()
-				, precio: $('#inputPrecio').val(), hiperenlace: $('#inputEnlace').val(), descripcion: $('#inputDescripcion').val()
+				nombreOferta: $('#inputNombre').val(), prioridadOferta: $('#selectProducto').val()
+				, precioOferta: $('#inputPrecio').val(), hiperenlaceOferta: $('#inputEnlace').val(), descripcionOferta: $('#inputDescripcion').val()
 			})
 		})
 			.then(function(response) {
@@ -114,13 +114,13 @@ function filtrarOferta() {
 			let Body = document.getElementById("idbody");
 			Body.replaceChildren();
 			for (let oferta of ofertas) {
-				obtenerFilaDom(oferta.id, oferta.nombre, oferta.precio);
+				obtenerFilaDom(oferta.idOferta, oferta.nombreOferta, oferta.precioOferta);
 
-				if (oferta.prioridad == "baja") {
+				if (oferta.prioridadOferta == "baja") {
 					$("tr").last().addClass("table-active");
-				} else if (oferta.prioridad == "media") {
+				} else if (oferta.prioridadOferta == "media") {
 					$("tr").last().addClass("table-warning");
-				} else if (oferta.prioridad == "alta") {
+				} else if (oferta.prioridadOferta == "alta") {
 					$("tr").last().addClass("table-danger");
 				}
 
@@ -148,7 +148,7 @@ $(document).on('click', '#info', function() {
 			//ModalFooter.replaceChildren();
 			let ModalTitle = document.getElementsByClassName("modal-title")[0];
 
-			ModalTitle.textContent = response.nombre;
+			ModalTitle.textContent = response.nombreOferta;
 
 			let tituloId = document.createElement('h6');
 			tituloId.textContent = "ID";
@@ -156,7 +156,7 @@ $(document).on('click', '#info', function() {
 			let infoId = document.createElement('p');
 			infoId.setAttribute("name", "id");
 			infoId.setAttribute("id", "infoId");
-			infoId.textContent = response.id;
+			infoId.textContent = response.idOferta;
 
 
 			let tituloNombre = document.createElement('h6');
@@ -164,7 +164,7 @@ $(document).on('click', '#info', function() {
 
 			let infoNombre = document.createElement('p');
 			infoNombre.setAttribute("id", "infoNombre");
-			infoNombre.textContent = response.nombre;
+			infoNombre.textContent = response.nombreOferta;
 
 
 			let tituloFecha = document.createElement('h6');
@@ -172,7 +172,7 @@ $(document).on('click', '#info', function() {
 
 			let infoFecha = document.createElement('p');
 			infoFecha.setAttribute("id", "infoFecha");
-			infoFecha.textContent = response.fecha_publicacion;
+			infoFecha.textContent = response.fechaPublicacion;
 
 
 			let tituloPrecio = document.createElement('h6');
@@ -180,7 +180,7 @@ $(document).on('click', '#info', function() {
 
 			let infoPrecio = document.createElement('p');
 			infoPrecio.setAttribute("id", "infoPrecio");
-			infoPrecio.textContent = response.precio;
+			infoPrecio.textContent = response.precioOferta;
 
 
 			let tituloPrioridad = document.createElement('h6');
@@ -188,7 +188,7 @@ $(document).on('click', '#info', function() {
 
 			let infoPrioridad = document.createElement('p');
 			infoPrioridad.setAttribute("id", "infoPrioridad");
-			infoPrioridad.textContent = response.prioridad;
+			infoPrioridad.textContent = response.prioridadOferta;
 
 
 			let tituloHipervinculo = document.createElement('h6');
@@ -197,7 +197,7 @@ $(document).on('click', '#info', function() {
 
 			let infoEnlace = document.createElement('p');
 			infoEnlace.setAttribute("id", "infoEnlace");
-			infoEnlace.textContent = response.hiperenlace;
+			infoEnlace.textContent = response.hiperenlaceOferta;
 
 			let tituloDescripcion = document.createElement('h6');
 			tituloDescripcion.textContent = "DESCRIPCION";
@@ -205,7 +205,7 @@ $(document).on('click', '#info', function() {
 
 			let infoDescripcion = document.createElement('p');
 			infoDescripcion.setAttribute("id", "infoDescripcion");
-			infoDescripcion.textContent = response.descripcion;
+			infoDescripcion.textContent = response.descripcionOferta;
 
 			ModalBody.appendChild(tituloId);
 			ModalBody.appendChild(infoId);
@@ -258,15 +258,15 @@ function editarOferta() {
 	var opcionPrioridadBaja = document.createElement("option");
 	var opcionPrioridadMedia = document.createElement("option");
 	var opcionPrioridadAlta = document.createElement("option");
-	
-	if(prioridad == 'baja'){
-		opcionPrioridadBaja.setAttribute("selected","selected");
-	}else if(prioridad == 'media'){
-		opcionPrioridadMedia.setAttribute("selected","selected");
-	}else if(prioridad == 'media'){
-		opcionPrioridadAlta.setAttribute("selected","selected");
+
+	if (prioridad == 'baja') {
+		opcionPrioridadBaja.setAttribute("selected", "selected");
+	} else if (prioridad == 'media') {
+		opcionPrioridadMedia.setAttribute("selected", "selected");
+	} else if (prioridad == 'alta') {
+		opcionPrioridadAlta.setAttribute("selected", "selected");
 	}
-	
+
 	opcionPrioridadBaja.textContent = "baja";
 	inputPrioridadInfo.appendChild(opcionPrioridadBaja);
 	opcionPrioridadMedia.textContent = "media";
@@ -318,28 +318,31 @@ function editarOferta() {
 	modalFooter.appendChild(botonGuardar);
 	modalFooter.appendChild(botonCancelar);
 	
+	//obtengo el id del la oferta.
 	var id = document.getElementById("infoId").textContent;
+	//y se lo paso al action del formulario desde el DOM
 	let form = document.getElementsByClassName("formularioEditar")[0];
-	form.setAttribute("action",'/editar/oferta/'+id);
+	form.setAttribute("action", '/editar/oferta/' + id);
+	
+	$("#cancelarCambios").click(function() {
+		$('#modal').modal('toggle');
+		window.location.reload();
+	});
 }
 
-$("#cancelarCambios").click(function() {
-	$("#modal").modal('hide');
-	window.location.reload();
-});
 $("#guardarCambios").click(function() {
 	var id = document.getElementById("infoId").textContent;
 	if ($('#inputNombreInfo').val() != "" && $('#inputPrioridadInfo').val() != ""
 		&& $('#inputEnlaceInfo').val() != "" && $('#inputPrecioInfo').val() != ""
 		&& $('#inputDescripcionInfo').val() != "") {
-		fetch('/editar/oferta/'+id, {
+		fetch('/editar/oferta/' + id, {
 			headers: {
 				'Content-type': 'application/json'
 			},
 			method: 'POST',
 			body: JSON.stringify({
-				nombre: $('#inputNombreInfo').val(), prioridad: $('#inputPrioridadInfo').val()
-				, precio: $('#inputPrecioInfo').val(), hiperenlace: $('#inputEnlaceInfo').val(), descripcion: $('#inputDescripcionInfo').val()
+				nombreOferta: $('#inputNombreInfo').val(), prioridadOferta: $('#inputPrioridadInfo').val()
+				, precioOferta: $('#inputPrecioInfo').val(), hiperenlaceOferta: $('#inputEnlaceInfo').val(), descripcionOferta: $('#inputDescripcionInfo').val()
 			})
 		})
 	};
