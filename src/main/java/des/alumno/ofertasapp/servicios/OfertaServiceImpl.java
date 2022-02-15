@@ -20,9 +20,6 @@ public class OfertaServiceImpl implements OfertaServicio {
 	@Autowired
 	OfertaDao ofertadao;
 
-	@Autowired
-	GenericDao ofertaGeneric;
-
 	@Override
 	public List<Oferta> obtenerofertaServ() {
 		return ofertadao.getAllOfertas();
@@ -30,7 +27,7 @@ public class OfertaServiceImpl implements OfertaServicio {
 
 	@Override
 	public Oferta eliminarOferta(long idOferta) {
-		Oferta oferta = (Oferta) ofertaGeneric.buscar(idOferta);
+		Oferta oferta = ofertadao.buscar(idOferta);
 		if (oferta != null) {
 			ofertadao.deleteById(idOferta);
 			return oferta;
@@ -40,22 +37,21 @@ public class OfertaServiceImpl implements OfertaServicio {
 
 	@Override
 	public Oferta obtenerInfoOferta(long idOferta) {
-		Oferta oferta = (Oferta) ofertaGeneric.buscar(idOferta);
+		Oferta oferta = ofertadao.buscar(idOferta);
 		return oferta;
 	}
 
 	@Override
 	public Oferta crearOferta(Oferta o) {
-		Oferta oferta = (Oferta) ofertaGeneric.crear(o);
+		Oferta oferta = ofertadao.crear(o);
 		if (oferta != null) {
 			return oferta;
 		}
 		return null;
 	}
-
 	@Override
 	public Oferta editarOferta(Oferta o, long id) {
-		Oferta encontrarporId = (Oferta) ofertaGeneric.buscar(id);
+		Oferta encontrarporId =  ofertadao.buscar(id);
 		if (encontrarporId != null) {
 
 			encontrarporId.setNombreOferta(o.getNombreOferta());
@@ -64,12 +60,13 @@ public class OfertaServiceImpl implements OfertaServicio {
 			encontrarporId.setDescripcionOferta(o.getDescripcionOferta());
 			encontrarporId.setPrecioOferta(o.getPrecioOferta());
 
-			Oferta ofertaSalvar = (Oferta) ofertaGeneric.actualizar(encontrarporId);
+			Oferta ofertaSalvar = (Oferta) ofertadao.actualizar(encontrarporId);
 
 			return ofertaSalvar;
 		}
 		return null;
 	}
+	
 
 	@Override
 	public List<Oferta> filtrarOferta(String prioridad) {

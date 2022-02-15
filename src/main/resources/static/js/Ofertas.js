@@ -10,22 +10,34 @@ document.addEventListener("DOMContentLoaded", function() {
 $(document).on('click', '#borrar', function() {
 	var tr = $(this).closest("tr");
 	var id = tr[0].childNodes[0].innerText;
-	let ruta = "/oferta/borrar/" + id;
-	window.location.href = ruta;
-	$(this).closest('tr').remove();
+	fetch("/oferta/borrar/" + id, {
+		headers: { "Content-Type": "application/json; charset=utf-8" }
+	})
+		.then(function(response) {
+			if (response.ok) {
+				return response.json()
+			} else {
+				throw "Error";
+			}
+
+		}).then(res => {
+			oferta = res;
+			obtenerFilaDom(oferta);
+			obtenerOfertas();
+		});
 });
 
 //MONTAR EL DOM DE LA FILA
-function obtenerFilaDom(id, nombre, precio) {
+function obtenerFilaDom(oferta) {
 	let Body = document.getElementById("idbody");
 	let tr = document.createElement('tr');
 
 	let tdId = document.createElement('td');
-	tdId.textContent = id;
+	tdId.textContent = oferta.idOferta;
 	let tdNombre = document.createElement('td');
-	tdNombre.textContent = nombre;
+	tdNombre.textContent = oferta.nombreOferta;
 	let tdPrecio = document.createElement('td');
-	tdPrecio.textContent = precio;
+	tdPrecio.textContent = oferta.precioOferta;
 
 
 	let tdInfo = document.createElement('td');
@@ -53,16 +65,17 @@ function obtenerFilaDom(id, nombre, precio) {
 	tr.appendChild(tdBorrar);
 	Body.appendChild(tr);
 
-
 }
 
 //OBTENER LA TABLA DE OFERTAS
 function obtenerOfertas() {
+	let resultados = document.getElementById("idbody");
+	resultados.replaceChildren();
 	fetch('/ofertas', { headers: { "Content-Type": "application/json; charset=utf-8" } })
 		.then(res => res.json()) // parse response as JSON (can be res.text() for plain response)
 		.then(ofertas => {
 			for (let oferta of ofertas) {
-				obtenerFilaDom(oferta.idOferta, oferta.nombreOferta, oferta.precioOferta);
+				obtenerFilaDom(oferta);
 
 				if (oferta.prioridadOferta == "baja") {
 					$("tr").last().addClass("table-active");
@@ -96,9 +109,16 @@ function crearOferta() {
 				} else {
 					throw "Error";
 				}
+
+			}).then(res => {
+				oferta = res;
+				obtenerFilaDom(oferta);
+				obtenerOfertas();
+				limpiarFormulario();
 			});
 	};
 }
+//FILTRAR OFERTA
 function filtrarOferta() {
 	let prioridad = "";
 	if (document.getElementById("prioridadBaja").checked) {
@@ -134,6 +154,8 @@ $(document).on('click', '#info', function() {
 	$(".btn-close").on('click', function() {
 		$("#modal").modal("hide");
 	});
+
+	$('.modal-footer').on('hidden', function() { $(this).removeData(); })
 
 	var tr = $(this).closest("tr");
 	var id = tr[0].childNodes[0].innerText;
@@ -229,6 +251,7 @@ $(document).on('click', '#info', function() {
 			ModalBody.appendChild(infoDescripcion);
 		});
 });
+//DOM EDITAR OFERTA
 function editarOferta() {
 	document.getElementById("cerrar-modal").setAttribute("onClick", "window.location.reload();");
 	//var tr = $(this).closest("tr");
@@ -317,33 +340,57 @@ function editarOferta() {
 
 	modalFooter.appendChild(botonGuardar);
 	modalFooter.appendChild(botonCancelar);
-	
-	//obtengo el id del la oferta.
-	var id = document.getElementById("infoId").textContent;
-	//y se lo paso al action del formulario desde el DOM
-	let form = document.getElementsByClassName("formularioEditar")[0];
-	form.setAttribute("action", '/editar/oferta/' + id);
-	
+
+
+	//BOTON CANCELAR CAMBIOS
 	$("#cancelarCambios").click(function() {
 		$('#modal').modal('toggle');
-		window.location.reload();
+		location.reload();
 	});
+	//BOTON EDITAR OFERTA
+	$("#guardarCambios").click(function() {
+		var id = document.getElementById("infoId").textContent;
+		if ($('#inputNombreInfo').val() != "" && $('#inputPrioridadInfo').val() != ""
+			&& $('#inputEnlaceInfo').val() != "" && $('#inputPrecioInfo').val() != ""
+			&& $('#inputDescripcionInfo').val() != "") {
+			fetch('/editar/oferta/' + id, {
+				headers: {
+					'Content-type': 'application/json'
+				},
+				method: 'PUT',
+				body: JSON.stringify({
+					nombreOferta: $('#inputNombreInfo').val(), prioridadOferta: $('#inputPrioridadInfo').val()
+					, precioOferta: $('#inputPrecioInfo').val(), hiperenlaceOferta: $('#inputEnlaceInfo').val(), descripcionOferta: $('#inputDescripcionInfo').val()
+				})
+
+			})
+				.then(function(response) {
+					if (response.ok) {
+						return response.json()
+					} else {
+						throw "Error";
+					}
+
+				}).then(res => {
+					oferta = res;
+					obtenerFilaDom(oferta);
+					$('#modal').modal('toggle');
+					obtenerOfertas();
+				});
+		};
+	});
+
+
+
 }
 
-$("#guardarCambios").click(function() {
-	var id = document.getElementById("infoId").textContent;
-	if ($('#inputNombreInfo').val() != "" && $('#inputPrioridadInfo').val() != ""
-		&& $('#inputEnlaceInfo').val() != "" && $('#inputPrecioInfo').val() != ""
-		&& $('#inputDescripcionInfo').val() != "") {
-		fetch('/editar/oferta/' + id, {
-			headers: {
-				'Content-type': 'application/json'
-			},
-			method: 'POST',
-			body: JSON.stringify({
-				nombreOferta: $('#inputNombreInfo').val(), prioridadOferta: $('#inputPrioridadInfo').val()
-				, precioOferta: $('#inputPrecioInfo').val(), hiperenlaceOferta: $('#inputEnlaceInfo').val(), descripcionOferta: $('#inputDescripcionInfo').val()
-			})
-		})
-	};
-});
+
+
+//limpiar formulario despues de enviar
+function limpiarFormulario() {
+	document.getElementById("inputNombre").value = '';
+	document.getElementById("selectProducto").value = '';
+	document.getElementById("inputPrecio").value = '';
+	document.getElementById("inputEnlace").value = 'https://';
+	document.getElementById("inputDescripcion").value = '';
+}

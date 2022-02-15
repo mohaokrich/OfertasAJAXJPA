@@ -73,7 +73,7 @@
 		</aside>
 		<aside id="menu_izq" class="toggle toggle-content" th:if="${session.usuario == null}">
 			<h2>Añadir Oferta</h2>
-			<form action="/oferta/crear" method="POST">
+			<!--<form action="/oferta/crear" method="POST">-->
 				<div class="form-group">
 					<label class="col-form-label" for="inputNombre">Producto</label>
 					<input type="text" class="form-control" name="nombre" placeholder="Nombre del producto"
@@ -106,7 +106,7 @@
 						<button class="btn btn-lg btn-primary" id="enviar" value="enviar" type="submit">ENVIAR</button>
 					</div>
 				</div>
-			</form>
+			<!--</form>-->
 		</aside>
 		<!-- Cierre menu izquierdo-->
 
@@ -214,7 +214,6 @@
 						<span aria-hidden="true"></span>
 					</button>
 				</div>
-				<form class="formularioEditar" method="POST">
 				<div class="modal-body">
 					<p>Modal body text goes here.</p>
 				</div>
@@ -222,7 +221,6 @@
 					<button type="button" class="btn btn-secondary" id="editarOferta" data-bs-dismiss="modal">Editar
 						Oferta</button>
 				</div>
-				</form>
 			</div>
 		</div>
 	</div>
