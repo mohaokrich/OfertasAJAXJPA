@@ -21,8 +21,8 @@ $(document).on('click', '#borrar', function() {
 			}
 
 		}).then(res => {
-			oferta = res;
-			obtenerFilaDom(oferta);
+			//oferta = res;
+			//obtenerFilaDom(oferta);
 			obtenerOfertas();
 		});
 });
@@ -253,7 +253,7 @@ $(document).on('click', '#info', function() {
 });
 //DOM EDITAR OFERTA
 function editarOferta() {
-	document.getElementById("cerrar-modal").setAttribute("onClick", "window.location.reload();");
+	//document.getElementById("cerrar-modal").setAttribute("onClick", "window.location.reload();");
 	//var tr = $(this).closest("tr");
 	let infoNombre = document.getElementById("infoNombre");
 	let infoPrioridad = document.getElementById("infoPrioridad");
@@ -323,8 +323,7 @@ function editarOferta() {
 	infoPrecio.replaceChildren(inputPrecioInfo);
 	infoDescripcion.replaceChildren(inputDescripcionInfo);
 
-	let modalFooter = document.getElementsByClassName("modal-footer")[0];
-	modalFooter.replaceChildren();
+	let ModalBody = document.getElementsByClassName("modal-body")[0];
 
 	let botonGuardar = document.createElement("button");
 	botonGuardar.setAttribute("type", "submit");
@@ -338,14 +337,14 @@ function editarOferta() {
 	botonCancelar.classList.add("btn", "btn-danger");
 	botonCancelar.textContent = "CANCELAR"
 
-	modalFooter.appendChild(botonGuardar);
-	modalFooter.appendChild(botonCancelar);
+	ModalBody.appendChild(botonGuardar);
+	ModalBody.appendChild(botonCancelar);
 
 
 	//BOTON CANCELAR CAMBIOS
 	$("#cancelarCambios").click(function() {
 		$('#modal').modal('toggle');
-		location.reload();
+		//location.reload();
 	});
 	//BOTON EDITAR OFERTA
 	$("#guardarCambios").click(function() {
@@ -372,10 +371,10 @@ function editarOferta() {
 					}
 
 				}).then(res => {
-					oferta = res;
-					obtenerFilaDom(oferta);
+					//oferta = res;
+					//obtenerFilaDom(oferta);
+					//obtenerOfertas();
 					$('#modal').modal('toggle');
-					obtenerOfertas();
 				});
 		};
 	});
