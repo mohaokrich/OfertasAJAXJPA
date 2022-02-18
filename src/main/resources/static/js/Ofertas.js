@@ -12,19 +12,8 @@ $(document).on('click', '#borrar', function() {
 	var id = tr[0].childNodes[0].innerText;
 	fetch("/oferta/borrar/" + id, {
 		headers: { "Content-Type": "application/json; charset=utf-8" }
-	})
-		.then(function(response) {
-			if (response.ok) {
-				return response.json()
-			} else {
-				throw "Error";
-			}
-
-		}).then(res => {
-			//oferta = res;
-			//obtenerFilaDom(oferta);
-			obtenerOfertas();
-		});
+	});
+	tr.remove();
 });
 
 //MONTAR EL DOM DE LA FILA
@@ -65,6 +54,14 @@ function obtenerFilaDom(oferta) {
 	tr.appendChild(tdBorrar);
 	Body.appendChild(tr);
 
+	if (oferta.prioridadOferta == "baja") {
+		$("tr").last().addClass("table-active");
+	} else if (oferta.prioridadOferta == "media") {
+		$("tr").last().addClass("table-warning");
+	} else if (oferta.prioridadOferta == "alta") {
+		$("tr").last().addClass("table-danger");
+	}
+
 }
 
 //OBTENER LA TABLA DE OFERTAS
@@ -76,14 +73,6 @@ function obtenerOfertas() {
 		.then(ofertas => {
 			for (let oferta of ofertas) {
 				obtenerFilaDom(oferta);
-
-				if (oferta.prioridadOferta == "baja") {
-					$("tr").last().addClass("table-active");
-				} else if (oferta.prioridadOferta == "media") {
-					$("tr").last().addClass("table-warning");
-				} else if (oferta.prioridadOferta == "alta") {
-					$("tr").last().addClass("table-danger");
-				}
 			}
 		});
 }
@@ -113,7 +102,6 @@ function crearOferta() {
 			}).then(res => {
 				oferta = res;
 				obtenerFilaDom(oferta);
-				obtenerOfertas();
 				limpiarFormulario();
 			});
 	};
@@ -134,16 +122,7 @@ function filtrarOferta() {
 			let Body = document.getElementById("idbody");
 			Body.replaceChildren();
 			for (let oferta of ofertas) {
-				obtenerFilaDom(oferta.idOferta, oferta.nombreOferta, oferta.precioOferta);
-
-				if (oferta.prioridadOferta == "baja") {
-					$("tr").last().addClass("table-active");
-				} else if (oferta.prioridadOferta == "media") {
-					$("tr").last().addClass("table-warning");
-				} else if (oferta.prioridadOferta == "alta") {
-					$("tr").last().addClass("table-danger");
-				}
-
+				obtenerFilaDom(oferta);
 			}
 		});
 }
@@ -253,8 +232,8 @@ $(document).on('click', '#info', function() {
 });
 //DOM EDITAR OFERTA
 function editarOferta() {
-	//document.getElementById("cerrar-modal").setAttribute("onClick", "window.location.reload();");
-	//var tr = $(this).closest("tr");
+	//let botonEditar = document.getElementById("editarOferta");
+	//botonEditar.setAttribute("disabled","true");
 	let infoNombre = document.getElementById("infoNombre");
 	let infoPrioridad = document.getElementById("infoPrioridad");
 	let infoEnlace = document.getElementById("infoEnlace");
@@ -323,7 +302,9 @@ function editarOferta() {
 	infoPrecio.replaceChildren(inputPrecioInfo);
 	infoDescripcion.replaceChildren(inputDescripcionInfo);
 
+
 	let ModalBody = document.getElementsByClassName("modal-body")[0];
+
 
 	let botonGuardar = document.createElement("button");
 	botonGuardar.setAttribute("type", "submit");
@@ -337,6 +318,8 @@ function editarOferta() {
 	botonCancelar.classList.add("btn", "btn-danger");
 	botonCancelar.textContent = "CANCELAR"
 
+
+
 	ModalBody.appendChild(botonGuardar);
 	ModalBody.appendChild(botonCancelar);
 
@@ -344,7 +327,7 @@ function editarOferta() {
 	//BOTON CANCELAR CAMBIOS
 	$("#cancelarCambios").click(function() {
 		$('#modal').modal('toggle');
-		//location.reload();
+		//botonEditar.setAttribute("disabled","false");
 	});
 	//BOTON EDITAR OFERTA
 	$("#guardarCambios").click(function() {
@@ -371,10 +354,9 @@ function editarOferta() {
 					}
 
 				}).then(res => {
-					//oferta = res;
-					//obtenerFilaDom(oferta);
-					//obtenerOfertas();
-					$('#modal').modal('toggle');
+					oferta = res;
+					editarTabla(oferta);
+					//botonEditar.setAttribute("disabled","false");
 				});
 		};
 	});
@@ -383,6 +365,16 @@ function editarOferta() {
 
 }
 
+
+
+function editarTabla(oferta) {
+	var tbody = document.getElementById("idbody");
+	//for(){
+		//for(){
+			
+		//}
+	//}
+}
 
 
 //limpiar formulario despues de enviar
