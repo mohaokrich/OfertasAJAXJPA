@@ -13,18 +13,7 @@ $(document).on('click', '#borrar', function() {
 	fetch("/oferta/borrar/" + id, {
 		headers: { "Content-Type": "application/json; charset=utf-8" }
 	})
-		.then(function(response) {
-			if (response.ok) {
-				return response.json()
-			} else {
-				throw "Error";
-			}
-
-		}).then(res => {
-			oferta = res;
-			obtenerFilaDom(oferta);
-			obtenerOfertas();
-		});
+	tr.remove();
 });
 
 //MONTAR EL DOM DE LA FILA
@@ -65,6 +54,14 @@ function obtenerFilaDom(oferta) {
 	tr.appendChild(tdBorrar);
 	Body.appendChild(tr);
 
+	if (oferta.prioridadOferta == "baja") {
+		$("tr").last().addClass("table-active");
+	} else if (oferta.prioridadOferta == "media") {
+		$("tr").last().addClass("table-warning");
+	} else if (oferta.prioridadOferta == "alta") {
+		$("tr").last().addClass("table-danger");
+	}
+
 }
 
 //OBTENER LA TABLA DE OFERTAS
@@ -76,14 +73,6 @@ function obtenerOfertas() {
 		.then(ofertas => {
 			for (let oferta of ofertas) {
 				obtenerFilaDom(oferta);
-
-				if (oferta.prioridadOferta == "baja") {
-					$("tr").last().addClass("table-active");
-				} else if (oferta.prioridadOferta == "media") {
-					$("tr").last().addClass("table-warning");
-				} else if (oferta.prioridadOferta == "alta") {
-					$("tr").last().addClass("table-danger");
-				}
 			}
 		});
 }
@@ -113,7 +102,6 @@ function crearOferta() {
 			}).then(res => {
 				oferta = res;
 				obtenerFilaDom(oferta);
-				obtenerOfertas();
 				limpiarFormulario();
 			});
 	};
@@ -134,16 +122,7 @@ function filtrarOferta() {
 			let Body = document.getElementById("idbody");
 			Body.replaceChildren();
 			for (let oferta of ofertas) {
-				obtenerFilaDom(oferta.idOferta, oferta.nombreOferta, oferta.precioOferta);
-
-				if (oferta.prioridadOferta == "baja") {
-					$("tr").last().addClass("table-active");
-				} else if (oferta.prioridadOferta == "media") {
-					$("tr").last().addClass("table-warning");
-				} else if (oferta.prioridadOferta == "alta") {
-					$("tr").last().addClass("table-danger");
-				}
-
+				obtenerFilaDom(oferta);
 			}
 		});
 }
@@ -253,7 +232,6 @@ $(document).on('click', '#info', function() {
 });
 //DOM EDITAR OFERTA
 function editarOferta() {
-	document.getElementById("cerrar-modal").setAttribute("onClick", "window.location.reload();");
 	//var tr = $(this).closest("tr");
 	let infoNombre = document.getElementById("infoNombre");
 	let infoPrioridad = document.getElementById("infoPrioridad");
@@ -323,8 +301,7 @@ function editarOferta() {
 	infoPrecio.replaceChildren(inputPrecioInfo);
 	infoDescripcion.replaceChildren(inputDescripcionInfo);
 
-	let modalFooter = document.getElementsByClassName("modal-footer")[0];
-	modalFooter.replaceChildren();
+	let modalBody = document.getElementsByClassName("modal-body")[0];
 
 	let botonGuardar = document.createElement("button");
 	botonGuardar.setAttribute("type", "submit");
@@ -338,14 +315,13 @@ function editarOferta() {
 	botonCancelar.classList.add("btn", "btn-danger");
 	botonCancelar.textContent = "CANCELAR"
 
-	modalFooter.appendChild(botonGuardar);
-	modalFooter.appendChild(botonCancelar);
+	modalBody.appendChild(botonGuardar);
+	modalBody.appendChild(botonCancelar);
 
 
 	//BOTON CANCELAR CAMBIOS
 	$("#cancelarCambios").click(function() {
 		$('#modal').modal('toggle');
-		location.reload();
 	});
 	//BOTON EDITAR OFERTA
 	$("#guardarCambios").click(function() {
@@ -373,9 +349,8 @@ function editarOferta() {
 
 				}).then(res => {
 					oferta = res;
-					obtenerFilaDom(oferta);
+					actualizarTabla(oferta);
 					$('#modal').modal('toggle');
-					obtenerOfertas();
 				});
 		};
 	});
@@ -383,7 +358,26 @@ function editarOferta() {
 
 
 }
+function actualizarTabla(oferta){
+	var id = Array.from(document.querySelectorAll("tbody th")).find(id =>id.textContent==oferta.idOferta);
+	var tr = id.parentNode;
+	switch (oferta.prioridadOferta) {
+		case "baja":
+		tr.setAttribute('class','table-active');
+			break;
+		case "media":
+			tr.setAttribute('class','table-warning');
+			break;
 
+		case "alta":
+			tr.setAttribute('class','table-danger');
+			break;
+	}	
+	var td=tr.querySelectorAll("td");
+	td[0].innerText=oferta.nombreOferta;
+	td[1].innerText=oferta.precioOferta;
+	
+}
 
 
 //limpiar formulario despues de enviar
