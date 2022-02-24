@@ -9,6 +9,6 @@ public interface OfertaServicioJpa {
 	void eliminarOferta(long idOferta);
 	Oferta crearOferta(Oferta o);
 	Oferta editarOferta(Oferta o, long idOferta);
-	List <Oferta> filtarPrioridad(String prioridad);
+	List <Oferta> filtarPrioridad(String prioridadOferta);
 	Oferta obtenerInfoOferta(long idOferta);
 }

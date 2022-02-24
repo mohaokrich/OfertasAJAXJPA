@@ -56,8 +56,8 @@ public class OfertaServicioJpaImpl implements OfertaServicioJpa {
 	}
 
 	@Override
-	public List<Oferta> filtarPrioridad(String prioridad) {
-		List<Oferta> buscarPorPrioridad = ofertaRepJpa.findByPrioridad(prioridad);
+	public List<Oferta> filtarPrioridad(String prioridadOferta) {
+		List<Oferta> buscarPorPrioridad = ofertaRepJpa.findByPrioridadOferta(prioridadOferta);
 		if(buscarPorPrioridad!=null) {
 			return buscarPorPrioridad;
 		}

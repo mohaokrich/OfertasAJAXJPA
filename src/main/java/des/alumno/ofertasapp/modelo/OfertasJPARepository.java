@@ -7,5 +7,5 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import des.alumno.ofertasapp.entidades.Oferta;
 
 public interface OfertasJPARepository extends JpaRepository<Oferta, Long> {
-	List<Oferta> findByPrioridad(String Prioridad);
+	List<Oferta> findByPrioridadOferta(String prioridadOferta);
 }
