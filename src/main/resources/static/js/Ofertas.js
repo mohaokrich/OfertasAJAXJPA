@@ -360,22 +360,30 @@ function editarOferta() {
 				});
 		};
 	});
-
-
-
 }
-
-
 
 function editarTabla(oferta) {
 	var tbody = document.getElementById("idbody");
-	//for(){
-		//for(){
-			
-		//}
-	//}
+	for (var i = 0, row; row = tbody.rows[i]; i++) {
+		var arrayTds = row.childNodes;
+		if (arrayTds[0].innerText == oferta.idOferta) {
+			arrayTds[1].textContent = oferta.nombreOferta;
+			arrayTds[2].textContent = oferta.precioOferta;
+			editarPrioridad(oferta, row);
+			$('#modal').modal('toggle');
+			break;
+		}
+	}
 }
-
+function editarPrioridad(oferta, fila) {
+	if (oferta.prioridadOferta == "baja") {
+		fila.setAttribute("class", "table-active");
+	} else if (oferta.prioridadOferta == "media") {
+		fila.setAttribute("class", "table-warning");
+	} else if (oferta.prioridadOferta == "alta") {
+		fila.setAttribute("class", "table-danger");
+	}
+}
 
 //limpiar formulario despues de enviar
 function limpiarFormulario() {
