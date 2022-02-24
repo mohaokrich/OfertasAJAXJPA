@@ -24,31 +24,26 @@ import des.alumno.ofertasapp.entidades.Oferta;
 import des.alumno.ofertasapp.modelo.GenericDao;
 import des.alumno.ofertasapp.modelo.OfertaDao;
 import des.alumno.ofertasapp.servicios.OfertaServicio;
+import des.alumno.ofertasapp.servicios.OfertaServicioJpa;
 
 @Controller
 public class OfertaController {
 	
 	@Autowired
-	OfertaDao modeloOferta;
-	
-	@Autowired
-	OfertaServicio modeloServicio;
-	
-	@Autowired
-	GenericDao modeloGenericDao;
+	OfertaServicioJpa modeloJPA;
 		
 		//OBTENER TODAS LAS OFERTAS
 		@ResponseBody
 		@RequestMapping(method = RequestMethod.GET, value = "/ofertas")
 		public List<Oferta> obtenerTodos() {
-			return modeloServicio.obtenerofertaServ();
+			return modeloJPA.obtenerAllOfertas();
 		}
 		
 		//OBTENER OFERTA POR ID
 		@ResponseBody
 		@RequestMapping(method = RequestMethod.GET, value = "/oferta/oferta{id}")
 		public Oferta getIdProducto(Model modelo, @PathVariable("id") long id) {
-			return modeloServicio.obtenerInfoOferta(id);
+			return modeloJPA.obtenerInfoOferta(id);
 		}
 		
 		//CREAR OFERTA
@@ -60,7 +55,7 @@ public class OfertaController {
 			oferta.setFechaPublicacion(date);
 			//fecha------
 			
-			Oferta crearOferta = modeloServicio.crearOferta(oferta);
+			Oferta crearOferta = modeloJPA.crearOferta(oferta);
 			
 			ResponseEntity<Oferta> resp = new ResponseEntity<Oferta>(crearOferta, HttpStatus.OK);
 			return resp;
@@ -69,22 +64,20 @@ public class OfertaController {
 		@ResponseBody
 		@PutMapping(value = "/editar/oferta/{id}")
 		public ResponseEntity<Oferta> editarOferta(@RequestBody Oferta oferta, @PathVariable("id") long id) {
-			Oferta editarOferta = modeloServicio.editarOferta(oferta, id);
+			Oferta editarOferta = modeloJPA.editarOferta(oferta, id);
 			ResponseEntity<Oferta> resp = new ResponseEntity<Oferta>(editarOferta, HttpStatus.OK);
 			return resp;
 	    }
 		//BORRAR OFERTA
 		@GetMapping("/oferta/borrar/{id}")
-		public ResponseEntity<Oferta> getBorrarIdProducto(@PathVariable("id") Long id) {
-			Oferta ofertaborrar = modeloServicio.eliminarOferta(id);
-			ResponseEntity<Oferta> resp = new ResponseEntity<Oferta>(ofertaborrar, HttpStatus.OK);
-			return resp;
+		public void getBorrarIdProducto(@PathVariable("id") Long id) {
+			modeloJPA.eliminarOferta(id);
 		}
 		//FILTRAR OFERTA
 		@ResponseBody
 		@RequestMapping(method = RequestMethod.GET, value = "/oferta/filtrar", params="prioridad")
 	    public List<Oferta> filtrarPrioridad(@RequestParam String prioridad) {
-	        return (List<Oferta>) modeloServicio.filtrarOferta(prioridad);
+	        return (List<Oferta>) modeloJPA.filtarPrioridad(prioridad);
 	    }
 		
 		
